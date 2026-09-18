@@ -1,3 +1,4 @@
+#include "AngelscriptUECompatibility.h"
 #include "AngelscriptEngine.h"
 #include "AngelscriptBinds.h"
 #include "AngelscriptBindDatabase.h"
@@ -3527,7 +3528,7 @@ void FAngelscriptEngine::InitialCompile()
 	// In order to provide proper support for tests that need the AssetManager
 	// and UPrimaryDataAsset already created, we need to delay the test discovery
 	// until the initial scan is finished.
-	FCoreDelegates::GetOnPostEngineInit().AddLambda([&]()
+	AngelscriptUECompatibility::OnPostEngineInit().AddLambda([&]()
 	{
 		UAssetManager* AssetManager = UAssetManager::GetIfInitialized();
 		if (AssetManager != nullptr)

@@ -1,3 +1,4 @@
+#include "AngelscriptUECompatibility.h"
 #include "Binds/Bind_TSet.h"
 
 #include "AngelscriptEngine.h"
@@ -59,7 +60,7 @@ bool FAngelscriptSetType::CanCreateProperty(const FAngelscriptTypeUsage& Usage) 
 
 FProperty* FAngelscriptSetType::CreateProperty(const FAngelscriptTypeUsage& Usage, const FPropertyParams& Params) const
 {
-	auto* SetProp = new FSetProperty(Params.Outer, Params.PropertyName);
+	auto* SetProp = AngelscriptUECompatibility::NewProperty<FSetProperty>(Params.Outer, Params.PropertyName);
 
 	FPropertyParams InnerParams = Params;
 	InnerParams.Outer = SetProp;

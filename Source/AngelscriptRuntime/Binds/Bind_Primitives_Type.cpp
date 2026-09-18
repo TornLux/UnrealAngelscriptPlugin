@@ -1,3 +1,4 @@
+#include "AngelscriptUECompatibility.h"
 #include "Bind_Primitives.h"
 
 #include "AngelscriptBinds.h"
@@ -38,7 +39,7 @@ FString FBoolType::GetAngelscriptTypeName() const
 
 FProperty* FBoolType::CreateProperty(const FAngelscriptTypeUsage& Usage, const FAngelscriptType::FPropertyParams& Params) const
 {
-	auto* Property = new FBoolProperty(Params.Outer, Params.PropertyName);
+	auto* Property = AngelscriptUECompatibility::NewProperty<FBoolProperty>(Params.Outer, Params.PropertyName);
 	Property->SetPropertyFlags(CPF_HasGetValueTypeHash);
 	Property->SetBoolSize(1, true, 255);
 	return Property;

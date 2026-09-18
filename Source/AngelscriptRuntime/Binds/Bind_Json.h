@@ -502,7 +502,7 @@ struct FJsonObjectFieldIterator
 		{
 			return TEXT("");
 		}
-#if !UE_JSONOBJECT_LEGACY_STRING_KEYS
+#if defined(UE_JSONOBJECT_LEGACY_STRING_KEYS) && !UE_JSONOBJECT_LEGACY_STRING_KEYS
 		return FString(CurrentValue.Key.ToView());
 #else
 		return CurrentValue.Key;

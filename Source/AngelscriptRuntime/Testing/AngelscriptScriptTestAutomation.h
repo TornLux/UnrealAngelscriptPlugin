@@ -18,6 +18,9 @@ struct FAngelscriptEngine;
 class ANGELSCRIPTRUNTIME_API FAngelscriptScriptTestAutomation
 {
 public:
+	FAngelscriptScriptTestAutomation() = default;
+	FAngelscriptScriptTestAutomation(const FAngelscriptScriptTestAutomation&) = delete;
+	FAngelscriptScriptTestAutomation& operator=(const FAngelscriptScriptTestAutomation&) = delete;
 	static FAngelscriptScriptTestAutomation& Get();
 
 	void Startup();

@@ -1,3 +1,4 @@
+#include "AngelscriptUECompatibility.h"
 #include "Binds/Bind_Delegates.h"
 
 #include "AngelscriptBindDatabase.h"
@@ -106,7 +107,7 @@ bool FScriptDelegateType::CanCreateProperty(const FAngelscriptTypeUsage& Usage) 
 
 FProperty* FScriptDelegateType::CreateProperty(const FAngelscriptTypeUsage& Usage, const FPropertyParams& Params) const
 {
-	auto* Prop = new FDelegateProperty(Params.Outer, Params.PropertyName);
+	auto* Prop = AngelscriptUECompatibility::NewProperty<FDelegateProperty>(Params.Outer, Params.PropertyName);
 	Prop->SignatureFunction = GetSignature(Usage);
 	return Prop;
 }
@@ -379,7 +380,7 @@ bool FMulticastScriptDelegateType::CanCreateProperty(const FAngelscriptTypeUsage
 
 FProperty* FMulticastScriptDelegateType::CreateProperty(const FAngelscriptTypeUsage& Usage, const FPropertyParams& Params) const
 {
-	auto* Prop = new FMulticastInlineDelegateProperty(Params.Outer, Params.PropertyName);
+	auto* Prop = AngelscriptUECompatibility::NewProperty<FMulticastInlineDelegateProperty>(Params.Outer, Params.PropertyName);
 	Prop->SignatureFunction = GetSignature(Usage);
 	Prop->SetPropertyFlags(CPF_BlueprintAssignable | CPF_BlueprintCallable);
 	return Prop;
@@ -714,7 +715,7 @@ bool FScriptSparseDelegateType::CanCreateProperty(const FAngelscriptTypeUsage& U
 
 FProperty* FScriptSparseDelegateType::CreateProperty(const FAngelscriptTypeUsage& Usage, const FPropertyParams& Params) const
 {
-	auto* Prop = new FMulticastSparseDelegateProperty(Params.Outer, Params.PropertyName);
+	auto* Prop = AngelscriptUECompatibility::NewProperty<FMulticastSparseDelegateProperty>(Params.Outer, Params.PropertyName);
 	Prop->SignatureFunction = GetSignature(Usage);
 	Prop->SetPropertyFlags(CPF_BlueprintAssignable | CPF_BlueprintCallable);
 	return Prop;

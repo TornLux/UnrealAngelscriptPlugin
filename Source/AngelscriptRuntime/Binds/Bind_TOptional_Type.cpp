@@ -1,3 +1,4 @@
+#include "AngelscriptUECompatibility.h"
 #include "Binds/Bind_TOptional.h"
 
 #include "AngelscriptEngine.h"
@@ -122,7 +123,7 @@ bool FAngelscriptOptionalType::CanCreateProperty(const FAngelscriptTypeUsage& Us
 
 FProperty* FAngelscriptOptionalType::CreateProperty(const FAngelscriptTypeUsage& Usage, const FPropertyParams& Params) const
 {
-	auto* OptionalProp = new FOptionalProperty(Params.Outer, Params.PropertyName);
+	auto* OptionalProp = AngelscriptUECompatibility::NewProperty<FOptionalProperty>(Params.Outer, Params.PropertyName);
 
 	FPropertyParams InnerParams = Params;
 	InnerParams.Outer = OptionalProp;

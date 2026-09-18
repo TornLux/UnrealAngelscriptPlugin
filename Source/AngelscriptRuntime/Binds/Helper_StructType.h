@@ -1,4 +1,5 @@
 #pragma once
+#include "AngelscriptUECompatibility.h"
 #include "AngelscriptType.h"
 #include "AngelscriptEngine.h"
 
@@ -28,7 +29,7 @@ struct TAngelscriptCoreStructType : public TAngelscriptCppType<NativeType>
 
 	FProperty* CreateProperty(const FAngelscriptTypeUsage& Usage, const FAngelscriptType::FPropertyParams& Params) const override
 	{
-		auto* StructProp = new FStructProperty(Params.Outer, Params.PropertyName);
+		auto* StructProp = AngelscriptUECompatibility::NewProperty<FStructProperty>(Params.Outer, Params.PropertyName);
 		StructProp->Struct = GetStruct(Usage);
 		return StructProp;
 	}

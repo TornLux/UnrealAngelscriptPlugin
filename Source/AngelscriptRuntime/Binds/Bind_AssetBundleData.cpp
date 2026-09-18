@@ -81,8 +81,8 @@ AS_FORCE_LINK const FAngelscriptBind Bind_AssetBundleData(
 		auto Data = Binds.ExistingClassForTarget("FAssetBundleData");
 		Data.Constructor("void f()", &FAngelscriptAssetBundleDataBinds::ConstructData, "FAssetBundleData", true);
 		Data.Method("int32 GetNumBundles() const", &FAngelscriptAssetBundleDataBinds::GetNumBundles);
-		Data.Method("void AddBundleAsset(FName BundleName, const FTopLevelAssetPath& AssetPath)", METHOD_TRIVIAL(FAssetBundleData, AddBundleAsset));
-		Data.Method("void AddBundleAssets(FName BundleName, const TArray<FTopLevelAssetPath>& AssetPaths)", METHOD_TRIVIAL(FAssetBundleData, AddBundleAssets));
+		Data.Method("void AddBundleAsset(FName BundleName, const FTopLevelAssetPath& AssetPath)", METHODPR_TRIVIAL(void, FAssetBundleData, AddBundleAsset, (FName, const FTopLevelAssetPath&)));
+		Data.Method("void AddBundleAssets(FName BundleName, const TArray<FTopLevelAssetPath>& AssetPaths)", METHODPR_TRIVIAL(void, FAssetBundleData, AddBundleAssets, (FName, const TArray<FTopLevelAssetPath>&)));
 		Data.Method("void SetBundleAssets(FName BundleName, const TArray<FTopLevelAssetPath>& AssetPaths)", &FAngelscriptAssetBundleDataBinds::SetBundleAssets);
 		Data.Method("bool FindEntry(FName BundleName, FAssetBundleEntry&out OutEntry) const", &FAngelscriptAssetBundleDataBinds::FindEntry);
 		Data.Method("void Reset()", METHOD_TRIVIAL(FAssetBundleData, Reset));

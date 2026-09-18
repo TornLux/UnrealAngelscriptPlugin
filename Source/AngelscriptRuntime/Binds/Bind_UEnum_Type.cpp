@@ -1,3 +1,4 @@
+#include "AngelscriptUECompatibility.h"
 #include "Bind_UEnum.h"
 
 #include "AngelscriptBindDatabase.h"
@@ -90,8 +91,8 @@ FProperty* FEnumType::CreateProperty(const FAngelscriptTypeUsage& Usage, const F
 
 	if (UsedEnum->GetCppForm() == UEnum::ECppForm::EnumClass || UsedEnum->IsA<UUserDefinedEnum>())
 	{
-		auto* EnumProp = new FEnumProperty(Params.Outer, Params.PropertyName);
-		auto* ByteProp = new FByteProperty(EnumProp, NAME_ENUM_UnderlyingType);
+		auto* EnumProp = AngelscriptUECompatibility::NewProperty<FEnumProperty>(Params.Outer, Params.PropertyName);
+		auto* ByteProp = AngelscriptUECompatibility::NewProperty<FByteProperty>(EnumProp, NAME_ENUM_UnderlyingType);
 
 		EnumProp->SetEnum(UsedEnum);
 		EnumProp->AddCppProperty(ByteProp);
@@ -100,7 +101,7 @@ FProperty* FEnumType::CreateProperty(const FAngelscriptTypeUsage& Usage, const F
 	}
 	else
 	{
-		auto* ByteProp = new FByteProperty(Params.Outer, Params.PropertyName);
+		auto* ByteProp = AngelscriptUECompatibility::NewProperty<FByteProperty>(Params.Outer, Params.PropertyName);
 		ByteProp->Enum = UsedEnum;
 		return ByteProp;
 	}

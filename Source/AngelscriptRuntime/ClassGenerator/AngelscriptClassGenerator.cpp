@@ -1,3 +1,4 @@
+#include "AngelscriptUECompatibility.h"
 #include "ClassGenerator/AngelscriptClassGenerator.h"
 #include "ClassGenerator/AngelscriptClassGeneratorShared.h"
 #include "ClassGenerator/AngelscriptClassRedirects.h"
@@ -499,7 +500,7 @@ void FAngelscriptClassGenerator::PerformReload(bool bFullReload)
 			else
 			{
 				// This is likely an initial compile, we should wait with activating subsystems until the engine is inited
-				FCoreDelegates::GetOnPostEngineInit().AddLambda([AddedSubsystems = ReinstancedSubsystems]()
+				AngelscriptUECompatibility::OnPostEngineInit().AddLambda([AddedSubsystems = ReinstancedSubsystems]()
 					{
 						for (UClass* NewSubsystem : AddedSubsystems)
 							FSubsystemCollectionBase::ActivateExternalSubsystem(NewSubsystem);

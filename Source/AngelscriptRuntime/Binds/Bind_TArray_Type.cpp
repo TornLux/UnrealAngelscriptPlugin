@@ -1,3 +1,4 @@
+#include "AngelscriptUECompatibility.h"
 #include "Binds/Bind_TArray.h"
 
 #include "AngelscriptEngine.h"
@@ -57,7 +58,7 @@ bool FAngelscriptArrayType::CanCreateProperty(const FAngelscriptTypeUsage& Usage
 
 FProperty* FAngelscriptArrayType::CreateProperty(const FAngelscriptTypeUsage& Usage, const FPropertyParams& Params) const
 {
-	auto* ArrayProp = new FArrayProperty(Params.Outer, Params.PropertyName);
+	auto* ArrayProp = AngelscriptUECompatibility::NewProperty<FArrayProperty>(Params.Outer, Params.PropertyName);
 
 	FPropertyParams InnerParams = Params;
 	InnerParams.Outer = ArrayProp;

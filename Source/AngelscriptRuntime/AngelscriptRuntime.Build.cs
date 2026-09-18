@@ -158,7 +158,12 @@ namespace UnrealBuildTool.Rules
 			if (BindingSettings.Method == FunctionBindingMethod.NativeRuntimeLinked)
 			{
 				AddConfiguredRuntimeLinkedDependencies(BindingSettings.RuntimeLinkedModules, Target);
-				AddGeneratedFunctionBindingWrappers(BindingSettings.RuntimeLinkedModules);
+				// UE 5.7 already compiles these UHT .gen.cpp files. Extra wrappers register each bind twice.
+				// UE 5.7 会自动编译 UHT 生成文件，额外包装会导致绑定重复注册。
+				if (Target.Version.MajorVersion > 5 || Target.Version.MinorVersion >= 8)
+				{
+					AddGeneratedFunctionBindingWrappers(BindingSettings.RuntimeLinkedModules);
+				}
 			}
 
             //var PluginPath = "../Plugins/Angelscript";

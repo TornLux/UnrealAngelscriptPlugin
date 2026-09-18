@@ -1,3 +1,4 @@
+#include "Misc/EngineVersionComparison.h"
 #include "AngelscriptBinds.h"
 #include "AngelscriptEngine.h"
 #include "AngelscriptType.h"
@@ -428,7 +429,11 @@ struct alignas(64) FScriptCall
 
 		ExecutePreamble();
 
+		#if UE_VERSION_OLDER_THAN(5, 8, 0)
+		Delegate.ProcessMulticastDelegate<UObject>(&ArgumentBuffer[0]);
+#else
 		Delegate.ProcessDelegate<UObject>(&ArgumentBuffer[0]);
+#endif
 
 		ExecuteCleanup();
 	}

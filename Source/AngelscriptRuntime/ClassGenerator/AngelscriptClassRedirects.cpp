@@ -113,7 +113,14 @@ namespace AngelscriptClassRedirects
 				}
 
 				OutRedirectValues.AddUnique(RedirectValue);
-				OutRedirects.AddUnique(FCoreRedirect(ECoreRedirectFlags::Type_Class, ExistingOldName, ExistingNewName));
+				const FCoreRedirect Redirect(ECoreRedirectFlags::Type_Class, ExistingOldName, ExistingNewName);
+                if (!OutRedirects.ContainsByPredicate([&Redirect](const FCoreRedirect& Existing)
+                {
+                    return Existing.IdenticalMatchRules(Redirect) && Existing.NewName == Redirect.NewName;
+                }))
+                {
+                    OutRedirects.Add(Redirect);
+                }
 			}
 		};
 

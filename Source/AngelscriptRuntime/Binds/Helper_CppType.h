@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AngelscriptUECompatibility.h"
 #include "AngelscriptType.h"
 
 #include "UObject/UnrealType.h"
@@ -122,7 +123,7 @@ struct TAngelscriptCppPropertyType : public TAngelscriptCppType<typename Propert
 
 	FProperty* CreateProperty(const FAngelscriptTypeUsage& Usage, const FAngelscriptType::FPropertyParams& Params) const override
 	{
-		return new PropertyType(Params.Outer, Params.PropertyName);
+		return AngelscriptUECompatibility::NewProperty<PropertyType>(Params.Outer, Params.PropertyName);
 	}
 
 	bool CanBeArgument(const FAngelscriptTypeUsage& Usage) const override { return true; }

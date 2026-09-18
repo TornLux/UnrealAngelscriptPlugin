@@ -1,3 +1,4 @@
+#include "AngelscriptUECompatibility.h"
 #include "Binds/Bind_TMap.h"
 
 #include "AngelscriptEngine.h"
@@ -74,7 +75,7 @@ bool FAngelscriptMapType::CanCreateProperty(const FAngelscriptTypeUsage& Usage) 
 
 FProperty* FAngelscriptMapType::CreateProperty(const FAngelscriptTypeUsage& Usage, const FPropertyParams& Params) const
 {
-	auto* MapProp = new FMapProperty(Params.Outer, Params.PropertyName);
+	auto* MapProp = AngelscriptUECompatibility::NewProperty<FMapProperty>(Params.Outer, Params.PropertyName);
 
 	{
 		FPropertyParams InnerParams = Params;

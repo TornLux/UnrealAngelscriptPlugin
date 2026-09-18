@@ -1,3 +1,4 @@
+#include "Misc/EngineVersionComparison.h"
 #include "ClassGenerator/AngelscriptClassGenerator.h"
 #include "ClassGenerator/AngelscriptClassGeneratorShared.h"
 #include "ClassGenerator/AngelscriptClassRedirects.h"
@@ -893,7 +894,11 @@ void FAngelscriptClassGenerator::DoFullReload(FModuleData& ModuleData, FEnumData
 		);
 
 		TArray<TPair<FName, int64>> EmptyNames;
+		#if UE_VERSION_OLDER_THAN(5, 8, 0)
+		Enum->SetEnums(EmptyNames, UEnum::ECppForm::Namespaced, EEnumFlags::None, true);
+#else
 		Enum->SetEnums(EmptyNames, UEnum::ECppForm::Namespaced, UEnum::EUnderlyingType::uint8, EEnumFlags::None, UEnum::EAddMaxKeyIfMissing::Yes);
+#endif
 
 #if WITH_EDITOR
 		Enum->SetMetaData(TEXT("BlueprintType"), TEXT("true"));
@@ -915,7 +920,11 @@ void FAngelscriptClassGenerator::DoFullReload(FModuleData& ModuleData, FEnumData
 			Values.Emplace(*FullNameStr, EnumDesc->EnumValues[i]);
 		}
 
+		#if UE_VERSION_OLDER_THAN(5, 8, 0)
+		Enum->SetEnums(Values, UEnum::ECppForm::Namespaced, EEnumFlags::None, true);
+#else
 		Enum->SetEnums(Values, UEnum::ECppForm::Namespaced, UEnum::EUnderlyingType::uint8, EEnumFlags::None, UEnum::EAddMaxKeyIfMissing::Yes);
+#endif
 
 		for (int32 i = 0, Count = Values.Num(); i < Count; ++i)
 		{

@@ -1,3 +1,4 @@
+#include "AngelscriptUECompatibility.h"
 #include "Core/AngelscriptEditorModule.h"
 #include "HotReload/AngelscriptDirectoryWatcherInternal.h"
 #include "HotReload/AngelscriptScriptTestAutomationRefresh.h"
@@ -923,7 +924,7 @@ void FAngelscriptEditorModule::StartupModule()
 
 	if (!GOnPostEngineInitHandle.IsValid())
 	{
-		GOnPostEngineInitHandle = FCoreDelegates::GetOnPostEngineInit().AddStatic(&OnEngineInitDone);
+		GOnPostEngineInitHandle = AngelscriptUECompatibility::OnPostEngineInit().AddStatic(&OnEngineInitDone);
 #if WITH_DEV_AUTOMATION_TESTS
 		GOnPostEngineInitRegistrationCountForTesting = 1;
 #endif
@@ -1193,7 +1194,7 @@ void FAngelscriptEditorModule::ShutdownModule()
 
 	if (GOnPostEngineInitHandle.IsValid())
 	{
-		FCoreDelegates::GetOnPostEngineInit().Remove(GOnPostEngineInitHandle);
+		AngelscriptUECompatibility::OnPostEngineInit().Remove(GOnPostEngineInitHandle);
 		GOnPostEngineInitHandle.Reset();
 	}
 #if WITH_DEV_AUTOMATION_TESTS

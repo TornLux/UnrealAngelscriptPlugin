@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AngelscriptUECompatibility.h"
 #include "Helper_AngelscriptArguments.h"
 #include "Helper_PODType.h"
 
@@ -38,7 +39,7 @@ struct TPrimitiveAngelscriptType : public TAngelscriptPODType<NativeType>
 
 	FProperty* CreateProperty(const FAngelscriptTypeUsage& Usage, const FAngelscriptType::FPropertyParams& Params) const override
 	{
-		auto* Property = new PropertyType(Params.Outer, Params.PropertyName);
+		auto* Property = AngelscriptUECompatibility::NewProperty<PropertyType>(Params.Outer, Params.PropertyName);
 		Property->SetPropertyFlags(CPF_HasGetValueTypeHash);
 		return Property;
 	}

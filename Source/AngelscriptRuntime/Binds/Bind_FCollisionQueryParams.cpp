@@ -1,3 +1,4 @@
+#include "Misc/EngineVersionComparison.h"
 #include "Bind_FCollisionQueryParams.h"
 
 #include "Misc/DefaultValueHelper.h"
@@ -383,9 +384,11 @@ namespace
 		CollisionObjectQueryParams.Property("uint8 IgnoreMask", &FCollisionObjectQueryParams::IgnoreMask);
 		CollisionObjectQueryParams.Method("void AddObjectTypesToQuery(ECollisionChannel QueryChannel)", METHOD_TRIVIAL(FCollisionObjectQueryParams, AddObjectTypesToQuery));
 		CollisionObjectQueryParams.Method("void RemoveObjectTypesToQuery(ECollisionChannel QueryChannel)", METHOD_TRIVIAL(FCollisionObjectQueryParams, RemoveObjectTypesToQuery));
+#if !UE_VERSION_OLDER_THAN(5, 8, 0)
 		CollisionObjectQueryParams.Method("int64 GetObjectTypesToQuery() const", METHOD_TRIVIAL(FCollisionObjectQueryParams, GetObjectTypesToQuery));
 		CollisionObjectQueryParams.Method("void SetObjectTypesToQuery(int64 InObjectTypesToQuery)", METHOD_TRIVIAL(FCollisionObjectQueryParams, SetObjectTypesToQuery));
 		CollisionObjectQueryParams.Method("int64 GetQueryBitfield64() const", METHOD_TRIVIAL(FCollisionObjectQueryParams, GetQueryBitfield64));
+#endif
 		CollisionObjectQueryParams.Method("bool IsValid() const", METHOD_TRIVIAL(FCollisionObjectQueryParams, IsValid));
 		CollisionObjectQueryParams.Method("void DoVerify() const", METHOD_TRIVIAL(FCollisionObjectQueryParams, DoVerify));
 

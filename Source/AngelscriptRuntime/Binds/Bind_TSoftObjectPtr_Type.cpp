@@ -1,3 +1,4 @@
+#include "AngelscriptUECompatibility.h"
 #include "Binds/Bind_TSoftObjectPtr.h"
 
 #include "AngelscriptBindDatabase.h"
@@ -185,7 +186,7 @@ FProperty* FSoftObjectPtrType::CreateProperty(const FAngelscriptTypeUsage& Usage
 	if (Usage.SubTypes.Num() == 0)
 		return nullptr;
 
-	auto* ObjectProp = new FSoftObjectProperty(Params.Outer, Params.PropertyName);
+	auto* ObjectProp = AngelscriptUECompatibility::NewProperty<FSoftObjectProperty>(Params.Outer, Params.PropertyName);
 	ObjectProp->PropertyClass = GetClassOfObject(Usage);
 
 	return ObjectProp;
@@ -242,7 +243,7 @@ FProperty* FSoftClassPtrType::CreateProperty(const FAngelscriptTypeUsage& Usage,
 	if (Usage.SubTypes.Num() == 0)
 		return nullptr;
 
-	auto* ClassProp = new FSoftClassProperty(Params.Outer, Params.PropertyName);
+	auto* ClassProp = AngelscriptUECompatibility::NewProperty<FSoftClassProperty>(Params.Outer, Params.PropertyName);
 	ClassProp->PropertyClass = UClass::StaticClass();
 	ClassProp->MetaClass = GetSubTypeClass(Usage);
 

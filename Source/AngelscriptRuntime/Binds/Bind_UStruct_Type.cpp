@@ -1,3 +1,4 @@
+#include "AngelscriptUECompatibility.h"
 #include "Bind_UStruct.h"
 
 #include "AngelscriptBindDatabase.h"
@@ -166,7 +167,7 @@ FProperty* FUStructType::CreateProperty(const FAngelscriptTypeUsage& Usage, cons
 {
 	UScriptStruct* UsedStruct = GetStruct(Usage);
 
-	auto* StructProp = new FStructProperty(Params.Outer, Params.PropertyName);
+	auto* StructProp = AngelscriptUECompatibility::NewProperty<FStructProperty>(Params.Outer, Params.PropertyName);
 	StructProp->Struct = UsedStruct;
 	if (CanHashValue(Usage))
 		StructProp->SetPropertyFlags(CPF_HasGetValueTypeHash);

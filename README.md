@@ -1,5 +1,7 @@
 # Unreal AngelScript 1.0.0
 
+UE 5.7 compatibility fork: see [adaptation and validation notes](UE57_COMPATIBILITY.md).
+
 Unreal AngelScript is a source Unreal Engine plugin that integrates AngelScript as a first-class scripting option for Unreal Engine projects.
 
 ## Version and source lineage
