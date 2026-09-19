@@ -7209,6 +7209,14 @@ int asCWriter::FindObjectPropIndex(short offset, int typeId, asDWORD *bc)
 
 	asCObjectType *objType = engine->GetObjectTypeFromTypeId(typeId);
 	asCObjectProperty *objProp = 0;
+	// Host layouts may contain offsets without an AS property symbol. A cache
+	// capture must fail without dereferencing a missing type/property or emitting
+	// an artifact that could later bind an unrelated property.
+	if (!objType)
+	{
+		error = true;
+		return 0;
+	}
 
 	// Look for composite properties first
 	for (asUINT n = 0; objProp == 0 && n < objType->properties.GetLength(); n++)
@@ -7256,7 +7264,11 @@ int asCWriter::FindObjectPropIndex(short offset, int typeId, asDWORD *bc)
 			objProp = objType->properties[n];
 	}
 
-	asASSERT(objProp);
+	if (!objProp)
+	{
+		error = true;
+		return 0;
+	}
 
 	// Remember if this is a composite property as the next call will then be for the same property
 	if (objProp->compositeOffset || objProp->isCompositeIndirect)
