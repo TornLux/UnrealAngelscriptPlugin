@@ -1070,10 +1070,13 @@ UPackage* FAngelscriptEngine::GetPackage()
 
 bool FAngelscriptEngine::ShouldInitializeThreaded()
 {
-	if (RuntimeConfig.bIsEditor)
-	{
-		return RuntimeConfig.bForceThreadedInitialize;
-	}
+	// An editor executable launched with -game is still an editor build. Its live
+	// reflection bind path creates UClass defaults and commits script bindings,
+	// both of which must run on the GameThread. Separate-process PIE clients use
+	// this path even though bIsEditor is false at runtime.
+#if WITH_EDITOR
+	return RuntimeConfig.bForceThreadedInitialize;
+#endif
 
 #if AS_USE_BIND_DB
 	// Defensive measure (pending verification), NOT a known hard requirement.
