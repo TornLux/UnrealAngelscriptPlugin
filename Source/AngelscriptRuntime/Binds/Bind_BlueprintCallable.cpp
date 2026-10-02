@@ -172,13 +172,28 @@ void BindBlueprintCallable(
 			FunctionBinding = map->Find(Name);
 	}
 
-	// Don't bind functions without a native pointer
+	// The cooked bind database is the authoritative allowlist, including project functions
+	// without a generated native pointer. Preserve their reflective fallback in packaged games.
+	// 烘焙绑定数据库是已验证的函数白名单；没有生成原生指针的工程函数也需在打包游戏中保留反射调用。
+#if AS_USE_BIND_DB
+	if (FunctionBinding == nullptr)
+	{
+		FunctionBinding = &Binds.GetTargetBindState().ClassFunctionBindings
+			.FindOrAdd(OwningClass).FindOrAdd(Function->GetName());
+	}
+#endif
+
+	// Editor bindings require an explicitly registered function entry.
 	if (FunctionBinding == nullptr)
 		return;
 
 #if AS_USE_BIND_DB
 	FAngelscriptFunctionSignature Signature;
-	Signature.InitFromDB(Binds.GetTargetTypeDatabase(), InType, Function, DBBind, /* bInitTypes= */ false);
+	// Reflective calls need argument and return types; declaration text alone is insufficient.
+	// 反射调用必须初始化参数与返回类型，只有声明文本会导致打包版本跳过这些函数。
+	Signature.InitFromDB(Binds.GetTargetTypeDatabase(), InType, Function, DBBind, /* bInitTypes= */ true);
+	if (!Signature.bAllTypesValid)
+		return;
 
 #elif !AS_USE_BIND_DB
 	FAngelscriptFunctionSignature Signature(Binds.GetTargetTypeDatabase(), InType, Function, OverrideName);
