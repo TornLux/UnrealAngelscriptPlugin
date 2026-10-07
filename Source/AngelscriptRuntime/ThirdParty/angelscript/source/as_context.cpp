@@ -5524,7 +5524,10 @@ int asCContext::CallFunctionCaller(asCScriptFunction* descr)
 			++ArgIndex;
 			FunctionArgs[ArgIndex] = &StackArgs[paramOffset+2];
 		}
-		else if (paramType.IsObject() || paramType.IsReference())
+		// Function handles occupy a pointer slot too; passing its address makes the
+		// native caller interpret stack memory as an asIScriptFunction instance.
+		// 函数句柄也使用指针槽；传槽地址会让原生调用器把栈内存误认为函数对象。
+		else if (paramType.IsObject() || paramType.IsFuncdef() || paramType.IsReference())
 		{
 			FunctionArgs[ArgIndex] = *(void**)&StackArgs[paramOffset];
 		}

@@ -1724,7 +1724,6 @@ asUINT asCScriptFunction::GenerateExposedType(bool editable, bool readable, bool
 asCFuncdefType * asCScriptFunction::funcdefType = nullptr;
 void * asCScriptFunction::objForDelegate = nullptr;
 asCScriptFunction * asCScriptFunction::funcForDelegate = nullptr;
-asSListPatternNode * asCScriptFunction::listPattern = nullptr;
 
 END_AS_NAMESPACE
 

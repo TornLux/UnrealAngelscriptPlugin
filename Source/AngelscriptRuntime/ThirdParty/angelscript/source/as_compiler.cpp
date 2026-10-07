@@ -2272,6 +2272,11 @@ int asCCompiler::PrepareArgument(asCDataType *paramType, asCExprContext *ctx, as
 		param = *paramType;
 
 	asCDataType dt = param;
+	// An untyped list is neither a primitive nor an object until materialized.
+	// Materialize before reference preparation; otherwise const-ref calls push no argument.
+	// 无类型列表尚不属于 primitive/object，必须先构造再处理引用实参，否则会漏压实参。
+	if (ctx->IsAnonymousInitList())
+		ImplicitConversion(ctx, dt, node, asIC_IMPLICIT_CONV);
 
 	// Need to protect arguments by reference
 	if( isFunction && dt.IsReference() )
@@ -11142,9 +11147,14 @@ int asCCompiler::CompilePostFixExpression(asCArray<asCScriptNode *> *postfix, as
 	return ret;
 }
 
-int asCCompiler::CompileAnonymousInitList(asCScriptNode *node, asCExprContext *ctx, const asCDataType &dt)
+int asCCompiler::CompileAnonymousInitList(asCScriptNode *node, asCExprContext *ctx, const asCDataType &inType)
 {
 	asASSERT(node->nodeType == snInitList);
+	// A list owns a temporary value even when its destination parameter is a reference.
+	// 列表临时值必须分配完整对象，不能按目标引用参数只分配一个指针槽。
+	asCDataType dt = inType;
+	dt.MakeReference(false);
+	dt.MakeReadOnly(false);
 
 	// Do not allow constructing non-shared types in shared functions
 	if (outFunc->IsShared() &&
@@ -15776,6 +15786,9 @@ int asCCompiler::MatchArgument(asCScriptFunction *desc, const asCExprContext *ar
 	ti.methodName = argExpr->methodName;
 	ti.enumValue = argExpr->enumValue;
 	ti.exprNode = argExpr->exprNode;
+	// Preserve list identity during overload preflight, just as Copy does for full expressions.
+	// 重载预检必须保留匿名列表标记，否则带列表构造器的类型也无法匹配 {...} 实参。
+	ti.isAnonymousInitList = argExpr->isAnonymousInitList;
 	if( argExpr->type.dataType.IsPrimitive() )
 		ti.type.dataType.MakeReference(false);
 

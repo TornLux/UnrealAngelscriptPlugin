@@ -1,5 +1,5 @@
-#include "AngelscriptUECompatibility.h"
 #include "AngelscriptEngine.h"
+#include "AngelscriptUECompatibility.h"
 #include "AngelscriptBinds.h"
 #include "AngelscriptBindDatabase.h"
 #include "AngelscriptSourceProvider.h"

@@ -1,5 +1,5 @@
-#include "AngelscriptUECompatibility.h"
 #include "ClassGenerator/AngelscriptClassGenerator.h"
+#include "AngelscriptUECompatibility.h"
 #include "ClassGenerator/AngelscriptClassGeneratorShared.h"
 #include "ClassGenerator/AngelscriptClassRedirects.h"
 #include "ClassGenerator/ASClass.h"

@@ -1,5 +1,5 @@
-#include "AngelscriptUECompatibility.h"
 #include "Core/AngelscriptEditorModule.h"
+#include "AngelscriptUECompatibility.h"
 #include "HotReload/AngelscriptDirectoryWatcherInternal.h"
 #include "HotReload/AngelscriptScriptTestAutomationRefresh.h"
 #include "HotReload/ClassReloadHelper.h"

@@ -358,8 +358,9 @@ public:
 	static void              *objForDelegate;
 	static asCScriptFunction *funcForDelegate;
 
-	// Used by list factory behaviour
-	static asSListPatternNode *listPattern;
+	// Owned by this list factory; unrelated function construction must not reset its pattern.
+	// 每个列表构造函数独立持有，不能被其他函数的构造/析构清空。
+	asSListPatternNode *listPattern;
 
 	// JIT compiled code of this function
 	asJITFunction                   jitFunction = 0;

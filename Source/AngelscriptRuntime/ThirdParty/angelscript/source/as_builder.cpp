@@ -5403,14 +5403,19 @@ asCScriptFunction *asCBuilder::RegisterLambda(asCScriptNode *node, asCScriptCode
 		args = args->next;
 	}
 
-	// The statement block for the function must be disconnected, as the builder is going to be the owner of it
-	args->DisconnectParent();
+	// Project adaptation: parsers use a private arena. Detaching a lambda node does not
+	// extend that arena's lifetime; deferred compilation must own a builder-arena copy.
+	// 项目适配：解析器使用独立内存池；脱离父节点不能延长内存寿命，延迟编译须复制到 builder 内存池。
+	args = args->CreateCopy(MemStack, engine);
 
 	// Get the return and parameter types from the funcDef
 	asCString funcName = name;
 	int r = RegisterScriptFunction(args, file, 0, 0, true, ns, false, false, funcName, funcDef->returnType, parameterNames, funcDef->parameterTypes, funcDef->inOutFlags, defaultArgs, asSFunctionTraits());
 	if( r < 0 )
 		return 0;
+	// Lambdas are registered while compiling bodies, after the normal signature pass.
+	// 匿名函数在函数体编译期间才注册，已错过常规签名阶段，必须补齐参数栈布局。
+	engine->scriptFunctions[functions[functions.GetLength()-1]->funcId]->CalculateParameterOffsets();
 	if( functions.GetLength() != 0 && functions[functions.GetLength()-1] )
 	{
 		functions[functions.GetLength()-1]->artifactInvocationKind =
