@@ -2013,8 +2013,11 @@ int asCBuilder::ParseFunctionDeclaration(asCObjectType *objType, const char *dec
 			return asINVALID_DECLARATION;
 		else
 		{
-			*listPattern = n;
-			n->DisconnectParent();
+            // [UE++]: The parser owns its node arena and dies when this function returns.
+            // Copy the pattern into the builder's arena until RegisterObjectBehaviour consumes it.
+            // 解析器的节点内存在函数返回时释放；复制到builder的arena，供后续行为注册安全读取。
+            *listPattern = n->CreateCopy(MemStack, engine);
+            // [UE--]
 		}
 	}
 	else
