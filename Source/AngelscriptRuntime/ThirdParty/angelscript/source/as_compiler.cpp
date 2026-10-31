@@ -18100,6 +18100,10 @@ void asCCompiler::CompileBooleanOperator(asCScriptNode *node, asCExprContext *lc
 			ConvertToVariable(rctx);
 			ReleaseTemporaryVariable(rctx->type, &rctx->bc);
 			rctx->bc.InstrW_W(asBC_CpyVtoV4, offset, rctx->type.stackOffset);
+			// A scalar result no longer borrows the RHS temporary. Its cleanup must stay
+			// inside this branch, otherwise short-circuiting destroys unconstructed values.
+			// 布尔值已复制，不再借用右侧临时对象；清理须留在右分支内，避免短路时析构未构造的值。
+			ProcessDeferredParams(rctx);
 			MergeExprBytecode(ctx, rctx);
 			ctx->bc.Label((short)label2);
 
